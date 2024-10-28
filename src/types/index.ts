@@ -3,15 +3,22 @@ export interface IProduct {
 	description: string;
 	image: string;
 	title: string;
-	category: ProductCategory;
+	category: string;
 	price: number | null;
+	inBasket?: boolean;
 }
 
-export interface IOrder {
-    payment: string;
+export interface IOrderForm {
+    payment: PaymentMethod;
+    address: string;
 	email: string;
-	phone: string;
-	address: string;
+	phone: string;	
+}
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+export type PaymentMethod = 'card' | 'cash' | '';
+
+export interface IOrder extends IOrderForm {
 	total: number;
 	items: string[];
 }
@@ -28,16 +35,7 @@ export interface IPage {
 }
 
 export interface IBasket {
-	basket: IProduct[];
+	basket: BasketProduct[];
 }
 
-export interface IForm {
-    payment: PaymentMethod;
-    address: string;
-	email: string;
-	phone: string;	
-}
-
-export type FormErrors = Partial<Record<keyof IOrder, string>>;
-export type ProductCategory = 'софт-скил' | 'хард-скил' | 'кнопка' | 'другое' | 'дополнительное';
-export type PaymentMethod = 'card' | 'cash';
+export type BasketProduct = Pick<IProduct, 'id' | 'title' | 'price'> & {inBasket?: boolean};
